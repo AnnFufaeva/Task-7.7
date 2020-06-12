@@ -247,4 +247,81 @@ public interface Graph {
         new Inner().visit(from);
         return ways;
     }
+
+    default ArrayList<Integer> bfsQueueFindAll(int from, int to) {
+        Boolean[] visited = new Boolean[vertexCount()];
+        //List<List<Integer>> indOfWay = new ArrayList<>();
+        ArrayList<Integer>[] indOfWay = new ArrayList[vertexCount()];
+        for(int i = 0; i < indOfWay.length; i++){
+            indOfWay[i] = new ArrayList<>();
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        List<Boolean[]> ways = new ArrayList<>();
+        List<Integer> result = new ArrayList<>();
+
+        queue.add(from);
+        visited[from]= true;
+        Boolean[] way0 = new Boolean[vertexCount()];
+        way0[from] = true;
+        ways.add(way0);
+        indOfWay[from].add(0);
+
+        while (queue.size() > 0) {
+            Integer curr = queue.remove();
+           // visitor.accept(curr);
+
+            for ( int i = 0; i < indOfWay[curr].size(); i++){
+                boolean flag = true;
+                int ind = indOfWay[curr].get(i);
+                Boolean[] wayCopy = ways.get(i).clone();
+
+                for (Integer v : adjacencies(curr)) {
+                    if(ways.get(ind)[v] != null){
+                       // indOfWay[v].remove(ind);
+                        continue;
+                    }
+                    if (flag) {
+                        flag = false;
+                        ways.get(ind)[v] = true;
+                        indOfWay[v].add(ind);
+                    } else {
+                            Boolean[] wayi = wayCopy.clone();
+                            wayi[v] = true;
+                            ways.add(wayi);
+                            indOfWay[v].add(ways.size() - 1);
+                    }
+                    if (v == to){
+                        result.add(indOfWay[v].get(indOfWay[v].size() - 1));
+                    }else {
+                        if (visited[v] == null) {
+                            queue.add(v);
+                            visited[v] = true;
+                        }
+                    }
+                }
+            }
+
+
+        }
+        ArrayList<Integer> vres = new ArrayList<>();
+        if (result.size() > 1){
+            for( int i = 0; i < ways.get(0).length; i++){
+                for (int j = 1; j < result.size(); j++){
+                    if (ways.get(result.get(0))[i] == null){
+                        break;
+                    }
+                    if (ways.get(result.get(j))[i] == null){
+                        break;
+                    }
+                    vres.add(i);
+                }
+
+            }
+        }
+        else if (result.size() == 1 ){
+            vres.add(-1);
+        }
+        else vres.add(-2);
+        return vres;
+    }
 }

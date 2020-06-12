@@ -198,9 +198,27 @@ public class GraphDemoFrame extends JFrame {
                     return;
                 }
                 showSystemOut(() -> {
+                    final boolean[] first = {true};
                     int from = (int) spinnerFromVertex.getValue();
                     int to = (int) spinnerToVertex.getValue();
-                    ArrayList<String> ways = new ArrayList<>();
+
+                    ArrayList<Integer> res = graph.bfsQueueFindAll(from, to);
+                    if (res.size() == 1){
+                        if (res.get(0) == -1) System.out.println("Найден единственный путь");
+                        else System.out.println("Между заданными вершинами путей не найдено");
+                    }
+                    else {
+                        if (res.size() == 2)
+                            System.out.print("Вершин, принадлежащих всем путям от " + from + " до " + to + ", не найдено.");
+                        else {
+                            for (int i = 0; i < res.size(); i++) {
+                                if (res.get(i) != from && res.get(i) != to)
+                                    System.out.print(res.get(i) + " ");
+                            }
+                            System.out.print("- вершины, принадлежащие всем путям от " + from + " до " + to);
+                        }
+                    }
+                    /*ArrayList<String> ways = new ArrayList<>();
 
                     ways =  graph.dfsRecursionFindAll(from, to);
                     for (int i = 0; i < ways.size(); i++ ){
@@ -224,7 +242,7 @@ public class GraphDemoFrame extends JFrame {
                         } else System.out.print("Вершин, принадлежащих всем путям от " + from + " до " + to + " не найдено.");
                     } else if (ways.size() == 1){
                         System.out.println("Найден единственный путь: " + ways.get(0));
-                    } else System.out.println("Между заданными вершинами путей не найдено");
+                    } else System.out.println("Между заданными вершинами путей не найдено");*/
                 });
             } catch (Exception exc) {
                 SwingUtils.showErrorMessageBox(exc);
