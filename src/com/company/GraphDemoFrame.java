@@ -202,7 +202,20 @@ public class GraphDemoFrame extends JFrame {
                     int from = (int) spinnerFromVertex.getValue();
                     int to = (int) spinnerToVertex.getValue();
 
-                    ArrayList<Integer> res = graph.bfsQueueFindAll(from, to);
+                    ArrayList<Integer> res = graph.bfsQueueDelete(from, to);
+
+
+                    if (res.get(0) == -1) System.out.println("Между заданными вершинами путей не найдено");
+                    else
+                    if (res.get(0) == -2)System.out.println("Вершин, принадлежащих всем путям от " + from + " до " + to + ", не найдено.");
+                    else {
+                        for (int i = 0; i < res.size(); i++) {
+                            System.out.print(res.get(i) + " ");
+                        }
+                        System.out.print("- вершины, принадлежащие всем путям от " + from + " до " + to);
+                    }
+
+                   /* ArrayList<Integer> res = graph.bfsQueueFindAll(from, to);
                     if (res.size() == 1){
                         if (res.get(0) == -1) System.out.println("Найден единственный путь");
                         else System.out.println("Между заданными вершинами путей не найдено");
@@ -217,7 +230,7 @@ public class GraphDemoFrame extends JFrame {
                             }
                             System.out.print("- вершины, принадлежащие всем путям от " + from + " до " + to);
                         }
-                    }
+                    }*/
                     /*ArrayList<String> ways = new ArrayList<>();
 
                     ways =  graph.dfsRecursionFindAll(from, to);

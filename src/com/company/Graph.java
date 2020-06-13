@@ -268,7 +268,7 @@ public interface Graph {
 
         while (queue.size() > 0) {
             Integer curr = queue.remove();
-           // visitor.accept(curr);
+            // visitor.accept(curr);
 
             for ( int i = 0; i < indOfWay[curr].size(); i++){
                 boolean flag = true;
@@ -277,7 +277,7 @@ public interface Graph {
 
                 for (Integer v : adjacencies(curr)) {
                     if(ways.get(ind)[v] != null){
-                       // indOfWay[v].remove(ind);
+                        // indOfWay[v].remove(ind);
                         continue;
                     }
                     if (flag) {
@@ -285,10 +285,10 @@ public interface Graph {
                         ways.get(ind)[v] = true;
                         indOfWay[v].add(ind);
                     } else {
-                            Boolean[] wayi = wayCopy.clone();
-                            wayi[v] = true;
-                            ways.add(wayi);
-                            indOfWay[v].add(ways.size() - 1);
+                        Boolean[] wayi = wayCopy.clone();
+                        wayi[v] = true;
+                        ways.add(wayi);
+                        indOfWay[v].add(ways.size() - 1);
                     }
                     if (v == to){
                         result.add(indOfWay[v].get(indOfWay[v].size() - 1));
@@ -324,4 +324,59 @@ public interface Graph {
         else vres.add(-2);
         return vres;
     }
+
+    default ArrayList<Integer> bfsQueueDelete(int from, int to) {
+        ArrayList<Integer> result = new ArrayList<>();
+        ArrayList<Integer> way = new ArrayList<>();
+        ArrayList<Integer> firstWay = bfsFindWay(to, from, -1);
+
+        int delete;
+        if (firstWay != null){
+            for(int i = 1; i < firstWay.size() - 1; i++){
+                delete = firstWay.get(i);
+                way = bfsFindWay(from, to, delete);
+                    if (way.isEmpty()) result.add(delete);
+
+            }
+            if (result.isEmpty()) result.add(-2);
+        }
+        else result.add(-1);
+        return result;
+    }
+
+    default ArrayList<Integer> bfsFindWay(int from, int to, int delete) {
+
+        boolean[] visited = new boolean[vertexCount()];
+        if (delete != -1) visited[delete] = true;
+        Queue<Integer> queue = new LinkedList<Integer>();
+        queue.add(from);
+        Integer[] pr = new Integer[vertexCount()];
+        pr[from] = -1;
+        visited[from] = true;
+
+        ArrayList<Integer> way = new ArrayList<>();
+
+        while (queue.size() > 0) {
+            Integer curr = queue.remove();
+
+            for (Integer v : adjacencies(curr)) {
+                if (v == to){
+                    pr[v] = curr;
+                    queue.clear();
+                    break;
+                }
+                if (!visited[v]) {
+                    pr[v] = curr;
+                    queue.add(v);
+                    visited[v] = true;
+                }
+            }
+        }
+       if (pr[to] != null) {
+           for (int v = to; v != -1; v = pr[v] ) way.add(0, v);
+       }
+       return way;
+    }
+
+
 }

@@ -39,6 +39,7 @@
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="187" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -89,6 +90,7 @@
       <workItem from="1591463254627" duration="26075000" />
       <workItem from="1591644678995" duration="114000" />
       <workItem from="1591885922864" duration="27279000" />
+      <workItem from="1591984734573" duration="9398000" />
     </task>
     <servers />
   </component>
